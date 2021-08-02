@@ -9,9 +9,16 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            CarTest();
+            //CarTest();
             //ColorTest();
             //BrandTest();
+
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+            var result = rentalManager.Add(new Rental { CarId = 11, CustomerId = 4, RentDate = DateTime.Now, ReturnDate = null });
+            Console.WriteLine(result.Message);
+
+           
+
 
         }
 
@@ -37,7 +44,7 @@ namespace ConsoleUI
         {
             CarManager carManager = new CarManager(new EfCarDal());
             var result = carManager.GetCarDetails();
-            if (result.Success==false)
+            if (result.Success == false)
             {
                 Console.WriteLine(result.Message);
             }
