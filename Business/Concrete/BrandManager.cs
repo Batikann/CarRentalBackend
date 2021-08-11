@@ -7,6 +7,7 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Business.BusinessAspects.Autofac;
 
 namespace Business.Concrete
 {
@@ -19,6 +20,7 @@ namespace Business.Concrete
             _brandDal = brandDal;
         }
 
+        [SecuredOperation("brand.add")]
         [ValidationAspect(typeof(BrandValidator))]
         public IResult Add(Brand entity)
         {
@@ -31,6 +33,7 @@ namespace Business.Concrete
             _brandDal.Delete(entity);
             return new SuccessResult();
         }
+
 
         public IDataResult<List<Brand>>GetAll()
         {
