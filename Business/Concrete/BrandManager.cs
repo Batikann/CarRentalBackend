@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Business.BusinessAspects.Autofac;
+using Core.Aspects.Autofac.Caching;
 
 namespace Business.Concrete
 {
@@ -22,6 +23,7 @@ namespace Business.Concrete
 
         [SecuredOperation("brand.add")]
         [ValidationAspect(typeof(BrandValidator))]
+        [CacheRemoveAspect("IBrandService.Get")]
         public IResult Add(Brand entity)
         {
             _brandDal.Add(entity);
@@ -34,7 +36,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-
+        [CacheAspect]
         public IDataResult<List<Brand>>GetAll()
         {
             return new SuccessDataResult<List<Brand>>(_brandDal.GetAll());
