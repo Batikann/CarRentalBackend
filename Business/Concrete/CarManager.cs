@@ -6,6 +6,7 @@ using Entities.Concrete;
 using Entities.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Business.Concrete
@@ -46,7 +47,7 @@ namespace Business.Concrete
             return new SuccessDataResult<Car>(_carDal.Get(x => x.CarId == id));
         }
 
-        public IDataResult<List<CarDetailDto>>GetCarDetails()
+        public IDataResult<List<CarDetailDto>>GetAllCarDetails()
         {
             if (DateTime.Now.Hour==20)
             {
@@ -55,14 +56,27 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarDetailDto>>( _carDal.GetCarDetails());
         }
 
-        public IDataResult<List<Car>>GetCarsByBrandId(int id)
+        public IDataResult<List<CarDetailDto>> GetCarDetails(int id)
         {
-            return new SuccessDataResult<List<Car>> (_carDal.GetAll(x => x.BrandId == id));
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails().Where(x => x.CarId == id)
+                .ToList());
         }
 
-        public IDataResult<List<Car>>GetCarsByColorId(int id)
+        public IDataResult<List<CarDetailDto>> GetCarsByColorAndBrandId(int brandId, int colorId)
         {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(x => x.ColorId == id));
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails()
+                .Where(x => x.BrandId == brandId && x.ColorId == colorId).ToList());
+        }
+
+
+        public IDataResult<List<CarDetailDto>>GetCarsByBrandId(int id)
+        {
+            return new SuccessDataResult<List<CarDetailDto>> (_carDal.GetCarDetails().Where(x=>x.BrandId==id).ToList());
+        }
+
+        public IDataResult<List<CarDetailDto>>GetCarsByColorId(int id)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails().Where(x=>x.ColorId==id).ToList());
         }
 
         public IResult Update(Car entity)
