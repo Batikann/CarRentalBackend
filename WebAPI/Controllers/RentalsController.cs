@@ -88,5 +88,24 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
+
+        [HttpPost("checkaviabledate")]
+        public IActionResult CheckAvailableDate(Rental rental)
+        {
+            var result = _rentalService.CheckAvailableDate(rental);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpGet("getcarcontrol")]
+        public IActionResult GetCarControl(int id)
+        {
+            var result = _rentalService.RentalCarControl(id);
+            return Ok(result);
+        }
     }
 }

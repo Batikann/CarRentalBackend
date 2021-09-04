@@ -5,6 +5,7 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Entities.DTOs;
 
 namespace Business.Concrete
 {
@@ -37,6 +38,11 @@ namespace Business.Concrete
         public IDataResult<Customer> GetById(int id)
         {
             return new SuccessDataResult<Customer>(_customerDal.Get(x => x.CustomerId == id));
+        }
+
+        public IDataResult<List<CustomerDetailDto>>GetCustomersDetails()
+        {
+            return new SuccessDataResult<List<CustomerDetailDto>>(_customerDal.GetCustomerDetails());
         }
 
         public IResult Update(Customer entity)

@@ -21,7 +21,7 @@ namespace Business.Concrete
             _brandDal = brandDal;
         }
 
-        [SecuredOperation("brand.add")]
+        //[SecuredOperation("brand.add")]
         [ValidationAspect(typeof(BrandValidator))]
         [CacheRemoveAspect("IBrandService.Get")]
         public IResult Add(Brand entity)
