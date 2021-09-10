@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Entities.DTOs;
 
 namespace WebAPI.Controllers
 {
@@ -55,10 +56,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("deletecar")]
-        public IActionResult DeleteCar(int id)
+        public IActionResult DeleteCar(Car car)
         {
-            var car = _carService.GetById(id);
-            var result = _carService.Delete(car.Data);
+            var result = _carService.Delete(car);
             if (result.Success)
             {
                 return Ok(result);

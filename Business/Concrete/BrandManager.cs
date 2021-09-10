@@ -23,7 +23,7 @@ namespace Business.Concrete
 
         //[SecuredOperation("brand.add")]
         [ValidationAspect(typeof(BrandValidator))]
-        [CacheRemoveAspect("IBrandService.Get")]
+        //[CacheRemoveAspect("IBrandService.Get")]
         public IResult Add(Brand entity)
         {
             _brandDal.Add(entity);
@@ -36,7 +36,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        [CacheAspect]
+        //[CacheAspect]
         public IDataResult<List<Brand>>GetAll()
         {
             return new SuccessDataResult<List<Brand>>(_brandDal.GetAll());

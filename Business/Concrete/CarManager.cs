@@ -49,7 +49,7 @@ namespace Business.Concrete
 
         public IDataResult<List<CarDetailDto>>GetAllCarDetails()
         {
-            if (DateTime.Now.Hour==20)
+            if (DateTime.Now.Hour==24)
             {
                 return new ErrorDataResult<List<CarDetailDto>>(Messages.SystemAlert);
             }
