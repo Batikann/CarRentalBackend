@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.Entities.Concrete;
+using Entities.DTOs;
 
 namespace WebAPI.Controllers
 {
@@ -44,6 +45,18 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
+        [HttpGet("getuserbymail")]
+        public IActionResult GetUserByEmail(string mail)
+        {
+            var result = _userService.GetByMail(mail);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
         [HttpPost("adduser")]
         public IActionResult AddUser(User user)
         {
@@ -75,6 +88,31 @@ namespace WebAPI.Controllers
             {
                 return Ok(result);
             }
+            return BadRequest(result);
+        }
+
+        [HttpGet("getbyuserclaim")]
+        public IActionResult GetByUserClaim(int userId)
+        {
+            var result = _userService.GetUserClaims(userId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpPost("editprofile")]
+        public IActionResult EditProfile(UserUpdateDto user)
+        {
+            var result = _userService.EditProfile(user);
+            if (result.Success)
+            {
+                return Ok(result);
+
+            }
+
             return BadRequest(result);
         }
     }

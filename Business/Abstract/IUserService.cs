@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using Core.Entities.Concrete;
 using Core.Utilities.Results;
+using Entities.DTOs;
 
 namespace Business.Abstract
 {
@@ -12,5 +13,9 @@ namespace Business.Abstract
     {
         IDataResult<List<OperationClaim>> GetClaims(User user);
         IDataResult<User> GetByMail(string email);
+
+        IDataResult<List<OperationClaim>>GetUserClaims(int userId);
+
+        IResult EditProfile(UserUpdateDto userUpdateDto);
     }
 }

@@ -18,5 +18,6 @@ namespace Business.Constants
         public static string UpdateImageSuccessful;
         public static string DeleteImage;
         public static string AuthorizationDenied="Kullanıcının Yetkisi Bulunmamaktadır.";
+        internal static string UserUpdated = "Kullanıcı Bilgileriniz Başarıyla Güncellenmiştir.";
     }
 }

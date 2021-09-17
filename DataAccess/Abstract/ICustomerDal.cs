@@ -7,8 +7,10 @@ using Entities.DTOs;
 
 namespace DataAccess.Abstract
 {
-    public interface ICustomerDal:IEntityRepository<Customer>
+    public interface ICustomerDal : IEntityRepository<Customer>
     {
         List<CustomerDetailDto> GetCustomerDetails();
+        CustomerDetailDto GetCustomerDetailsDetailsById(int customerId);
+        CustomerDetailDto GetCustomerDetailsByUserId(int userId);
     }
 }
