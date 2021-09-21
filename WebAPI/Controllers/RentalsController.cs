@@ -54,6 +54,18 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
+        [HttpPost("endrental")]
+        public IActionResult EndRental(Rental rental)
+        {
+            var result = _rentalService.EndRental(rental);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
         [HttpPost("deleterental")]
         public IActionResult DeleteRental(int id)
         {
@@ -106,6 +118,54 @@ namespace WebAPI.Controllers
         {
             var result = _rentalService.RentalCarControl(id);
             return Ok(result);
+        }
+
+        [HttpGet("iscaravailable")]
+        public IActionResult IsCarAvailable(Rental rental)
+        {
+            var result = _rentalService.IsCarAvailable(rental);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpGet("getrentaldetailsbycarid")]
+        public IActionResult GetRentalDetailsByCarId(int carId)
+        {
+            var result = _rentalService.GetRentalByCarId(carId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpGet("getrentaldetailsbycustomerid")]
+        public IActionResult GetRentalDetailsByCustomerId(int customerId)
+        {
+            var result = _rentalService.GetRentalByCustomerId(customerId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpGet("checkcarrentalstatus")]
+        public IActionResult CheckCarRentalStatus(Rental rental)
+        {
+            var result = _rentalService.CheckCarRentalStatus(rental);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
         }
     }
 }

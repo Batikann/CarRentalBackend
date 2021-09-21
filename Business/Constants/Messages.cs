@@ -17,7 +17,12 @@ namespace Business.Constants
         public static string AddImageSuccessful;
         public static string UpdateImageSuccessful;
         public static string DeleteImage;
-        public static string AuthorizationDenied="Kullanıcının Yetkisi Bulunmamaktadır.";
-        internal static string UserUpdated = "Kullanıcı Bilgileriniz Başarıyla Güncellenmiştir.";
+        public static string AuthorizationDenied = "Kullanıcının Yetkisi Bulunmamaktadır.";
+        public static string UserUpdated = "Kullanıcı Bilgileriniz Başarıyla Güncellenmiştir.";
+        public static string CreditCardAdded = "Kredi Kartınız Başarıyla Eklenmiştir";
+        public static string CreditCarDeleted = "Kredi Kartı Başarıyla Silinmiştir";
+        public static string SuccessRentalUpdate = "Araba Başarıyla  Geri Alınmıştır.";
+        public static string ErrorRentalUpdate = "Araba İadesi Başarısız.";
+        public static string CarIsNotAvailable="Araba Mevcut Değil";
     }
 }

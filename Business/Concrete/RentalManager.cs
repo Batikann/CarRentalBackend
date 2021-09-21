@@ -16,23 +16,31 @@ namespace Business.Concrete
         IRentalDal _rentalDal;
         private ICarService _carService;
 
-        public RentalManager(IRentalDal rentalDal,ICarService carService)
+        public RentalManager(IRentalDal rentalDal, ICarService carService)
         {
             _rentalDal = rentalDal;
             _carService = carService;
         }
 
-        public IResult Add(Rental entity)
+        public IResult Add(Rental rental)
         {
-            var resultToCheckRented = _rentalDal.GetRentalDetails(
-                r => r.CarId == entity.CarId && DateTime.Compare(entity.RentDate, (DateTime)r.ReturnDate) < 0);
-            if (resultToCheckRented.Count > 0)
+            var results = _rentalDal.GetAll(re => re.CarId == rental.CarId);
+            foreach (var result in results)
             {
-                return new ErrorResult(Messages.RentalNotAdded);
+                if (result.ReturnDate == null || (rental.RentDate >= result.RentDate && rental.RentDate <= result.ReturnDate) ||
+                    (rental.ReturnDate >= result.RentDate && rental.RentDate <= result.ReturnDate))
+                {
+                    return new ErrorResult(Messages.RentalNotAdded);
+                }
             }
-            _rentalDal.Add(entity);
+            _rentalDal.Add(rental);
             return new SuccessResult(Messages.RentalAdded);
 
+        }
+
+        public IDataResult<List<RentalDetailDto>> GetRentalByCarId(int carId)
+        {
+            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails(x => x.CarId == carId));
         }
 
         public IResult CheckAvailableDate(Rental rental)
@@ -42,7 +50,7 @@ namespace Business.Concrete
                 ((rental.RentDate >= r.RentDate) && (rental.RentDate <= r.ReturnDate)) ||
                 ((rental.ReturnDate >= r.RentDate) && (rental.ReturnDate <= r.ReturnDate))
             ).ToList();
-            if (result.Count>0)
+            if (result.Count > 0)
             {
                 string errorMessage = "This car Already Between" + result[0].RentDate + "and" + result[0].ReturnDate +
                                       ".";
@@ -73,9 +81,15 @@ namespace Business.Concrete
             return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails());
         }
 
+        public IDataResult<List<RentalDetailDto>> GetRentalByCustomerId(int customerId)
+        {
+            return new SuccessDataResult<List<RentalDetailDto>>(
+                _rentalDal.GetRentalDetails(x => x.CustomerId == customerId));
+        }
+
         public IResult RentalCarControl(int id)
         {
-            var result = _rentalDal.GetRentalDetails(x => x.CarId == id && x.RentDate == null).Any();
+            var result = _rentalDal.GetRentalDetails(x => x.CarId == id).Any();
             if (result)
             {
                 return new ErrorResult();
@@ -89,5 +103,49 @@ namespace Business.Concrete
             _rentalDal.Update(entity);
             return new SuccessResult();
         }
+
+        public IResult EndRental(Rental rental)
+        {
+            var result = _rentalDal.GetAll();
+            var updateRental = result.LastOrDefault();
+            if (updateRental.ReturnDate != null && updateRental.RentDate < DateTime.Now && updateRental.ReturnDate > DateTime.Now)
+            {
+                updateRental.ReturnDate = DateTime.Now;
+                _rentalDal.Update(updateRental);
+                return new SuccessResult(Messages.SuccessRentalUpdate);
+            }
+
+            return new ErrorResult(Messages.ErrorRentalUpdate);
+        }
+
+        public IResult IsCarAvailable(Rental rental)
+        {
+            var result = _rentalDal.GetAll(r => r.CarId == rental.CarId);
+
+            if (result.Any(r => r.RentDate != null && r.ReturnDate == null))
+            {
+                return new ErrorResult(Messages.CarIsNotAvailable);
+            }
+            else
+            {
+                return new SuccessResult();
+            }
+        }
+
+        public IResult CheckCarRentalStatus(Rental rental)
+        {
+            var results = _rentalDal.GetAll(x => x.CarId == rental.CarId);
+            foreach (var result in results)
+            {
+                if (result.ReturnDate == null || (rental.RentDate >= result.RentDate && rental.RentDate <= result.ReturnDate) ||
+                    (rental.ReturnDate >= result.RentDate && rental.RentDate <= result.ReturnDate))
+                {
+                    return new ErrorResult();
+                }
+            }
+
+            return new SuccessResult();
+        }
+
     }
 }
